@@ -2,9 +2,18 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import logger from './utils/logger'
 
 function App() {
   const [count, setCount] = useState(0)
+
+  const handleClick = () => {
+    setCount((count) => count + 1)
+    logger.debug(`Count incremented to ${count + 1}`)
+    logger.info(`Button clicked`)
+  }
+
+  logger.info('App component rendered')
 
   return (
     <>
@@ -18,7 +27,7 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        <button onClick={handleClick}>
           count is {count}
         </button>
         <p>
