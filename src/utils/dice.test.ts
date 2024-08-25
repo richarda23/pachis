@@ -1,24 +1,32 @@
 import { test, expect } from 'vitest';
-import { throwDice } from './dice';
+import { Dice } from './dice';
 
-test('throwDice returns a number between 1 and 6', () => {
+test('Dice.throw() returns a number between 1 and 6', () => {
+    const dice = new Dice(12345);
     for (let i = 0; i < 100; i++) {
-        const result = throwDice(i);
+        const result = dice.throw();
         expect(result).toBeGreaterThanOrEqual(1);
         expect(result).toBeLessThanOrEqual(6);
         expect(Number.isInteger(result)).toBe(true);
     }
 });
 
-test('throwDice returns consistent results for the same seed', () => {
+test('Dice instances with the same seed produce the same first throw', () => {
     const seed = 12345;
-    const result1 = throwDice(seed);
-    const result2 = throwDice(seed);
-    expect(result1).toBe(result2);
+    const dice1 = new Dice(seed);
+    const dice2 = new Dice(seed);
+    expect(dice1.throw()).toBe(dice2.throw());
 });
 
-test('throwDice returns different results for different seeds', () => {
-    const result1 = throwDice(1);
-    const result2 = throwDice(2);
+test('Dice instances with different seeds produce different first throws', () => {
+    const dice1 = new Dice(1);
+    const dice2 = new Dice(2);
+    expect(dice1.throw()).not.toBe(dice2.throw());
+});
+
+test('Multiple throws from the same Dice instance produce different results', () => {
+    const dice = new Dice(12345);
+    const result1 = dice.throw();
+    const result2 = dice.throw();
     expect(result1).not.toBe(result2);
 });
