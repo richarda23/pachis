@@ -11,6 +11,4 @@ it("creates board with start positions", () => {
     expect(board.squares.find(c => c.isStart(new Player("blue")))?.position).toBe(22);
     expect(board.squares.find(c => c.isStart(new Player("red")))?.position).toBe(39);
     expect(board.squares.find(c => c.isStart(new Player("green")))?.position).toBe(56);
-
-
 })
