@@ -10,6 +10,19 @@ const getMoves = (player: Colour, boardState: BoardState, diceRoll: DiceRoll): A
     const currentState = boardState.currentState;
     const startPosition = boardState._board.startPosition(player);
 
+    // if we have all players at base and it's not a 5, we can't go
+    if (boardState.isAllCountersAtBase(player) && diceRoll != 5) {
+        return [];
+    }
+
+    if (boardState.isSomeCountersAtBase(player)) {
+        // we have to move a piece on if we can
+        if (diceRoll == 5 && boardState.isAvailable(player, startPosition)) {
+            return [{ player, from: -1, to: startPosition }]
+
+        }
+    }
+
 
 
     return [];
