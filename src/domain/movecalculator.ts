@@ -6,7 +6,7 @@ export type Move = {
     from: number,
     to: number
 }
-const getMoves = (player: Colour, boardState: BoardState, diceRoll: DiceRoll): Array<Move> => {
+export const getMoves = (player: Colour, boardState: BoardState, diceRoll: DiceRoll): Array<Move> => {
     const currentState = boardState.currentState;
     const startPosition = boardState._board.startPosition(player);
 
