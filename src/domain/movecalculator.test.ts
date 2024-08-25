@@ -2,7 +2,7 @@ import { DiceRoll, getMoves } from './movecalculator';
 import { BoardState } from './boardState';
 import { Board } from './board';
 import { Colour } from './player';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 
 describe('getMoves', () => {
@@ -45,6 +45,29 @@ describe('getMoves', () => {
                     from: -1,
                     to: board.startPosition(player)
                 });
+            });
+        });
+
+        it('should return an empty array if the start position is not available', () => {
+            testForAllPlayers((player) => {
+                // Move one counter out of base
+                boardState.currentState[player][0] = 5;
+
+                // Place two counters of another player on the start position
+                const otherPlayer = player === 'yellow' ? 'blue' : 'yellow';
+                const startPosition = board.startPosition(player);
+                boardState.currentState[otherPlayer][0] = startPosition;
+                boardState.currentState[otherPlayer][1] = startPosition;
+
+                // Mock isAvailable method to return false for the start position
+                const isAvailableSpy = vi.spyOn(boardState, 'isAvailable').mockReturnValue(false);
+
+                const moves = getMoves(player, boardState, 5);
+                expect(moves).toHaveLength(0);
+
+                expect(isAvailableSpy).toHaveBeenCalledWith(player, startPosition);
+
+                isAvailableSpy.mockRestore();
             });
         });
     });
