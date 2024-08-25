@@ -108,5 +108,21 @@ describe('BoardState', () => {
             expect(boardState.previousMoves).toHaveLength(1);
             expect(boardState.previousMoves).not.toEqual(previousMoves);
         });
+
+        it('should return an immutable copy of currentState', () => {
+            const initialState = boardState.currentState;
+            
+            // Try to modify the returned state
+            initialState[player][0] = 999;
+            
+            // Check that the original state in boardState hasn't changed
+            expect(boardState.currentState).toEqual({
+                yellow: [-1, -1, 10, 15],
+                blue: [-1, -1, -1, -1],
+                red: [-1, -1, -1, -1],
+                green: [-1, -1, -1, -1]
+            });
+            expect(boardState.currentState).not.toEqual(initialState);
+        });
     });
 });
