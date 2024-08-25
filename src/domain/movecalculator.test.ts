@@ -60,5 +60,61 @@ describe('getMoves', () => {
                 isAvailableSpy.mockRestore();
             });
         });
+
+        describe('when all counters are in play', () => {
+            it('should return 4 possible moves when all counters can move', () => {
+                const diceRoll: DiceRoll = 3;
+                boardState.currentState[player] = [10, 20, 30, 40];
+
+                // Mock isAvailable to always return true
+                const isAvailableSpy = vi.spyOn(boardState, 'isAvailable').mockReturnValue(true);
+
+                const moves = getMoves(player, boardState, diceRoll);
+
+                expect(moves).toHaveLength(4);
+                expect(moves).toEqual(expect.arrayContaining([
+                    { player, from: 10, to: 13 },
+                    { player, from: 20, to: 23 },
+                    { player, from: 30, to: 33 },
+                    { player, from: 40, to: 43 }
+                ]));
+
+                isAvailableSpy.mockRestore();
+            });
+
+            it('should return fewer moves when some counters cannot move', () => {
+                const diceRoll: DiceRoll = 3;
+                boardState.currentState[player] = [10, 20, 30, 40];
+
+                // Mock isAvailable to return false for some positions
+                const isAvailableSpy = vi.spyOn(boardState, 'isAvailable').mockImplementation(
+                    (_, position) => position !== 23 && position !== 33
+                );
+
+                const moves = getMoves(player, boardState, diceRoll);
+
+                expect(moves).toHaveLength(2);
+                expect(moves).toEqual(expect.arrayContaining([
+                    { player, from: 10, to: 13 },
+                    { player, from: 40, to: 43 }
+                ]));
+
+                isAvailableSpy.mockRestore();
+            });
+
+            it('should return no moves when no counters can move', () => {
+                const diceRoll: DiceRoll = 3;
+                boardState.currentState[player] = [10, 20, 30, 40];
+
+                // Mock isAvailable to always return false
+                const isAvailableSpy = vi.spyOn(boardState, 'isAvailable').mockReturnValue(false);
+
+                const moves = getMoves(player, boardState, diceRoll);
+
+                expect(moves).toHaveLength(0);
+
+                isAvailableSpy.mockRestore();
+            });
+        });
     });
 });
