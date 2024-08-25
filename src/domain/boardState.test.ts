@@ -62,4 +62,34 @@ describe('BoardState', () => {
             expect(boardState.isValidMove(player, -1, startPosition)).toBe(true);
         });
     });
+
+    describe('makeMove', () => {
+        let boardState: BoardState;
+        let player: Colour;
+
+        beforeEach(() => {
+            boardState = new BoardState(2, board);
+            player = 'yellow';
+            boardState['_positions'][player] = [-1, -1, 10, 15];
+        });
+
+        it('should append to history when a valid move is made', () => {
+            const initialState = boardState.currentState;
+            boardState.makeMove(player, -1, 4); // Assuming 4 is a valid start position
+            expect(boardState.previousMoves).toHaveLength(1);
+            expect(boardState.previousMoves[0]).toEqual(initialState);
+        });
+
+        it('should update the position when a valid move is made', () => {
+            boardState.makeMove(player, -1, 4); // Assuming 4 is a valid start position
+            expect(boardState.currentState[player]).toContain(4);
+            expect(boardState.currentState[player].filter(pos => pos === -1)).toHaveLength(1);
+        });
+
+        it('should throw an error for an invalid move', () => {
+            expect(() => {
+                boardState.makeMove(player, 10, 9); // Moving backwards
+            }).toThrow('invalid move');
+        });
+    });
 });
