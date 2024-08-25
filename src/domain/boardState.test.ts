@@ -235,4 +235,38 @@ describe('BoardState', () => {
             expect(boardState.isAvailable('red', 20)).toBe(true);
         });
     });
+
+    describe('activeCounters', () => {
+        let boardState: BoardState;
+
+        beforeEach(() => {
+            boardState = new BoardState(2, board);
+        });
+
+        it('should return an empty array when all counters are at base', () => {
+            expect(boardState.activeCounters('yellow')).toEqual([]);
+        });
+
+        it('should return only the active counters', () => {
+            boardState['_positions'].yellow = [-1, 5, 10, -1];
+            expect(boardState.activeCounters('yellow')).toEqual([5, 10]);
+        });
+
+        it('should return all counters when none are at base', () => {
+            boardState['_positions'].blue = [1, 2, 3, 4];
+            expect(boardState.activeCounters('blue')).toEqual([1, 2, 3, 4]);
+        });
+
+        it('should not include counters at HOME position', () => {
+            boardState['_positions'].red = [-1, 5, 75, 20]; // Assuming 75 is the HOME position
+            expect(boardState.activeCounters('red')).toEqual([5, 20]);
+        });
+
+        it('should work for different players', () => {
+            boardState['_positions'].yellow = [-1, 5, 10, -1];
+            boardState['_positions'].green = [1, 2, -1, 4];
+            expect(boardState.activeCounters('yellow')).toEqual([5, 10]);
+            expect(boardState.activeCounters('green')).toEqual([1, 2, 4]);
+        });
+    });
 });
