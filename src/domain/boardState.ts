@@ -1,5 +1,6 @@
 import { Board } from "./board";
 import { Colour } from "./player";
+import { cloneDeep } from "lodash";
 
 type Positions = Record<Colour, number[]>
 
@@ -18,6 +19,9 @@ export class BoardState {
         this._board = board
     }
 
+    get previousMoves() {
+        return this._previousMoves.map(p => cloneDeep(p));
+    }
     // get a copy of current state
     get currentState(): Positions {
         return {
@@ -27,7 +31,8 @@ export class BoardState {
             "green": [...this._positions.green],
         }
     }
-
+    // makes a valid move
+    // asserts that the move is valid
     makeMove(player: Colour, from: number, to: number) {
         if (!this.isValidMove(player, from, to)) {
             throw new Error(`invalid move!!! ${player} from ${from} to ${to} `)
@@ -35,7 +40,6 @@ export class BoardState {
         this._previousMoves.push(this.currentState);
         const counterToMove = this._positions[player].findIndex(pos => pos === from);
         this._positions[player][counterToMove] = to;
-
     }
 
     isValidMove(player: Colour, from: number, to: number): boolean {
@@ -43,7 +47,7 @@ export class BoardState {
 
         const currState = this.currentState;
         if (to <= from) {
-            throw new Error(`Can only move max of 6 but was ${from} to ${to} `);
+            throw new Error(`invalid move: Can only move max of 6 but was ${from} to ${to} `);
         }
         if (!
             currState[player].some(pos => pos === from)) {

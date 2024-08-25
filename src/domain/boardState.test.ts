@@ -21,8 +21,6 @@ describe('BoardState', () => {
         }).toThrow("Moving from invalid position 10 but counters are at -1,-1,-1,-1");
     });
 
-
-
     it('should not throw an error for a valid move', () => {
         const boardState = new BoardState(2, board);
         const player = 'yellow';
@@ -32,7 +30,9 @@ describe('BoardState', () => {
         }).not.toThrow();
     });
 
-    describe.each(['yellow', 'blue', 'red', 'green'])('when a 5 is thrown and there are counters at base', (colour) => {
+    const allPlayers: Colour[] = ['yellow', 'blue', 'red', 'green'];
+
+    describe.each(allPlayers)('when a 5 is thrown and there are counters at base', (colour) => {
         let boardState: BoardState;
         let player: Colour;
         let startPosition: number;
@@ -63,26 +63,28 @@ describe('BoardState', () => {
         });
     });
 
-    describe('makeMove', () => {
+    describe.each(allPlayers)('makeMove', (colour) => {
         let boardState: BoardState;
         let player: Colour;
+        let startPosition: number;
 
         beforeEach(() => {
             boardState = new BoardState(2, board);
-            player = 'yellow';
+            player = colour as Colour;
             boardState['_positions'][player] = [-1, -1, 10, 15];
+            startPosition = boardState._board.startPosition(player);
         });
 
         it('should append to history when a valid move is made', () => {
             const initialState = boardState.currentState;
-            boardState.makeMove(player, -1, 4); // Assuming 4 is a valid start position
+            boardState.makeMove(player, -1, startPosition); // Assuming 5 is a valid start position
             expect(boardState.previousMoves).toHaveLength(1);
             expect(boardState.previousMoves[0]).toEqual(initialState);
         });
 
         it('should update the position when a valid move is made', () => {
-            boardState.makeMove(player, -1, 4); // Assuming 4 is a valid start position
-            expect(boardState.currentState[player]).toContain(4);
+            boardState.makeMove(player, -1, startPosition); // Assuming 5 is a valid start position
+            expect(boardState.currentState[player]).toContain(startPosition);
             expect(boardState.currentState[player].filter(pos => pos === -1)).toHaveLength(1);
         });
 

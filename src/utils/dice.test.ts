@@ -7,7 +7,6 @@ test('Dice.throw() returns a number between 1 and 6', () => {
         const result = dice.throw();
         expect(result).toBeGreaterThanOrEqual(1);
         expect(result).toBeLessThanOrEqual(6);
-        console.info(result)
         expect(Number.isInteger(result)).toBe(true);
     }
 });
