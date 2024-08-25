@@ -3,9 +3,10 @@ import { Colour, Player } from "./player"
 
 type PlayerConditional = (player: Player) => boolean;
 export type BoardCell = {
-    isStart: PlayerConditional,
-    isBlackSpot: boolean,
-    position: number
+    readonly isStart: PlayerConditional,
+    readonly isBlackSpot: boolean,
+    readonly position: number,
+    readonly isHomeRunStart: PlayerConditional
 }
 
 const players: Player[] = [new Player("yellow"), new Player("blue"), new Player("red"), new Player("green")]
@@ -25,14 +26,12 @@ export class Board {
             const colour = players[i].colour;
 
             for (let j = 0; j < 17; j++) {
-
+                const position = i * 17 + j;
                 const cell: BoardCell = {
-                    isStart: (player: Player) => player.colour === colour && j == 5
-                        || player.colour === "blue" && j == 22
-                        || player.colour === "red" && j == 39
-                        || player.colour === "green" && j == 56,
+                    isStart: (player: Player) => player.colour === colour && j == 5,
                     isBlackSpot: j == 0 || j == 5 || j == 12,
-                    position: i * 17 + j
+                    position: position,
+                    isHomeRunStart: (player: Player) => player.colour === colour && j == 0
                 }
                 squares.push(cell)
             }
@@ -42,6 +41,13 @@ export class Board {
 
     startPosition(player: Colour) {
         return startingPositions[player];
+    }
+
+    boardCellAt(position: number): BoardCell {
+        if (position < 0 || position > 67) {
+            throw new Error("invalid position, must be on the board")
+        }
+        return { ...this._squares[position] }
     }
 
     get squares() {

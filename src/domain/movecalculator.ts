@@ -19,13 +19,10 @@ export const getMoves = (player: Colour, boardState: BoardState, diceRoll: DiceR
         // we have to move a piece on if we can
         if (diceRoll == 5 && boardState.isAvailable(player, startPosition)) {
             return [{ player, from: -1, to: startPosition }]
-
         }
+    } else {
+        // all our play
     }
 
-
-
     return [];
-
-
 }

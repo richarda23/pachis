@@ -91,5 +91,10 @@ export class BoardState {
             .length;
         return countersAtPosition < 2;
     }
+    // gets an array of active counters (counters not at base or HOME)
+    activeCounters(player: Colour): number[] {
+        //TODO include test for 'Home' position
+        return this._positions[player].filter(pos => pos != BASE);
+    }
 
 }

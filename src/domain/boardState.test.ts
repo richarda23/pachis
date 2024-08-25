@@ -230,6 +230,7 @@ describe('BoardState', () => {
             boardState['_positions'].yellow = [-1, 10, -1, -1];
             boardState['_positions'].blue = [-1, -1, 15, -1];
             expect(boardState.isAvailable('yellow', 10)).toBe(true);
+            expect(boardState.isAvailable('yellow', 15)).toBe(true);
             expect(boardState.isAvailable('blue', 15)).toBe(true);
             expect(boardState.isAvailable('red', 20)).toBe(true);
         });
