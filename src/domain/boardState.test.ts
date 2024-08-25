@@ -173,4 +173,35 @@ describe('BoardState', () => {
             expect(boardState.isAllCountersAtBase('red')).toBe(false);
         });
     });
+
+    describe('isSomeCountersAtBase', () => {
+        let boardState: BoardState;
+
+        beforeEach(() => {
+            boardState = new BoardState(2, board);
+        });
+
+        it('should return true when all counters are at base (-1)', () => {
+            expect(boardState.isSomeCountersAtBase('yellow')).toBe(true);
+            expect(boardState.isSomeCountersAtBase('blue')).toBe(true);
+            expect(boardState.isSomeCountersAtBase('red')).toBe(true);
+            expect(boardState.isSomeCountersAtBase('green')).toBe(true);
+        });
+
+        it('should return true when some counters are at base', () => {
+            boardState['_positions'].yellow = [-1, -1, 5, 10];
+            expect(boardState.isSomeCountersAtBase('yellow')).toBe(true);
+
+            boardState['_positions'].blue = [-1, 10, 15, 20];
+            expect(boardState.isSomeCountersAtBase('blue')).toBe(true);
+        });
+
+        it('should return false when no counters are at base', () => {
+            boardState['_positions'].red = [1, 2, 3, 4];
+            expect(boardState.isSomeCountersAtBase('red')).toBe(false);
+
+            boardState['_positions'].green = [5, 10, 15, 20];
+            expect(boardState.isSomeCountersAtBase('green')).toBe(false);
+        });
+    });
 });
