@@ -145,4 +145,32 @@ describe('BoardState', () => {
             expect(boardState.isStartOfGame()).toBe(false);
         });
     });
+
+    describe('isAllCountersAtHome', () => {
+        let boardState: BoardState;
+
+        beforeEach(() => {
+            boardState = new BoardState(2, board);
+        });
+
+        it('should return true when all counters are at home (-1)', () => {
+            expect(boardState.isAllCountersAtHome('yellow')).toBe(true);
+            expect(boardState.isAllCountersAtHome('blue')).toBe(true);
+            expect(boardState.isAllCountersAtHome('red')).toBe(true);
+            expect(boardState.isAllCountersAtHome('green')).toBe(true);
+        });
+
+        it('should return false when any counter is not at home', () => {
+            boardState['_positions'].yellow = [-1, -1, -1, 5];
+            expect(boardState.isAllCountersAtHome('yellow')).toBe(false);
+
+            boardState['_positions'].blue = [-1, 10, -1, -1];
+            expect(boardState.isAllCountersAtHome('blue')).toBe(false);
+        });
+
+        it('should return false when all counters are out of home', () => {
+            boardState['_positions'].red = [1, 2, 3, 4];
+            expect(boardState.isAllCountersAtHome('red')).toBe(false);
+        });
+    });
 });
