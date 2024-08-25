@@ -38,4 +38,34 @@ describe('BoardState', () => {
             boardState.isValidMove(player, -1, 4);
         }).not.toThrow();
     });
+
+    describe('when a 5 is thrown and there are counters at base', () => {
+        let boardState: BoardState;
+        let player: Colour;
+        let startPosition: number;
+
+        beforeEach(() => {
+            boardState = new BoardState(2, board);
+            player = 'yellow';
+            startPosition = board.startPosition(player);
+            boardState['_positions'].yellow = [-1, -1, 10, 15]; // Two counters at base
+        });
+
+        it('should allow moving from base to start position', () => {
+            expect(boardState.isValidMove(player, -1, startPosition)).toBe(true);
+        });
+
+        it('should not allow moving from a non-base position', () => {
+            expect(boardState.isValidMove(player, 10, 15)).toBe(false);
+        });
+
+        it('should not allow moving to a position other than start', () => {
+            expect(boardState.isValidMove(player, -1, startPosition + 1)).toBe(false);
+        });
+
+        it('should not allow moving to start if two pieces are already there', () => {
+            boardState['_positions'].yellow = [-1, startPosition, startPosition, 15];
+            expect(boardState.isValidMove(player, -1, startPosition)).toBe(false);
+        });
+    });
 });
