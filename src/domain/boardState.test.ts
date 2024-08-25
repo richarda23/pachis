@@ -97,13 +97,13 @@ describe('BoardState', () => {
         it('should return an immutable copy of previousMoves', () => {
             // Make a valid move to add an entry to previousMoves
             boardState.makeMove(player, -1, startPosition);
-            
+
             // Get the previousMoves
             const previousMoves = boardState.previousMoves;
-            
-            // Try to modify the returned array
+
+            //  modify the returned array
             previousMoves.push({ yellow: [1, 2, 3, 4], blue: [-1, -1, -1, -1], red: [-1, -1, -1, -1], green: [-1, -1, -1, -1] });
-            
+
             // Check that the original previousMoves in boardState hasn't changed
             expect(boardState.previousMoves).toHaveLength(1);
             expect(boardState.previousMoves).not.toEqual(previousMoves);
@@ -111,16 +111,18 @@ describe('BoardState', () => {
 
         it('should return an immutable copy of currentState', () => {
             const initialState = boardState.currentState;
-            
+
             // Try to modify the returned state
-            initialState[player][0] = 999;
-            
+            initialState[player][0] = 12;
+
             // Check that the original state in boardState hasn't changed
             expect(boardState.currentState).toEqual({
-                yellow: [-1, -1, 10, 15],
-                blue: [-1, -1, -1, -1],
-                red: [-1, -1, -1, -1],
-                green: [-1, -1, -1, -1]
+                ...{
+                    yellow: [-1, -1, -1, -1],
+                    blue: [-1, -1, -1, -1],
+                    red: [-1, -1, -1, -1],
+                    green: [-1, -1, -1, -1]
+                }, [player]: [-1, -1, 10, 15]
             });
             expect(boardState.currentState).not.toEqual(initialState);
         });

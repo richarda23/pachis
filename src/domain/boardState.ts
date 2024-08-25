@@ -24,12 +24,7 @@ export class BoardState {
     }
     // get a copy of current state
     get currentState(): Positions {
-        return {
-            "yellow": [...this._positions.yellow],
-            "blue": [...this._positions.blue],
-            "red": [...this._positions.red],
-            "green": [...this._positions.green],
-        }
+        return cloneDeep(this._positions)
     }
     // makes a valid move
     // asserts that the move is valid
