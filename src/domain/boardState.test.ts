@@ -47,6 +47,10 @@ describe('BoardState', () => {
         it('should allow moving from base to start position', () => {
             expect(boardState.isValidMove(player, -1, startPosition)).toBe(true);
         });
+        it('should  allow moving to start if only 1 piece is already there', () => {
+            boardState['_positions'].yellow = [-1, startPosition, 6, 15];
+            expect(boardState.isValidMove(player, -1, startPosition)).toBe(true);
+        });
 
         it('should not allow moving from a non-base position', () => {
             expect(boardState.isValidMove(player, 10, 15)).toBe(false);
@@ -57,10 +61,6 @@ describe('BoardState', () => {
             expect(boardState.isValidMove(player, -1, startPosition)).toBe(false);
         });
 
-        it('should  allow moving to start if only 1 piece is already there', () => {
-            boardState['_positions'].yellow = [-1, startPosition, 6, 15];
-            expect(boardState.isValidMove(player, -1, startPosition)).toBe(true);
-        });
     });
 
     describe.each(allPlayers)('makeMove', (colour) => {
