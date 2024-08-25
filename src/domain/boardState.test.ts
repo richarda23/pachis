@@ -93,5 +93,20 @@ describe('BoardState', () => {
                 boardState.makeMove(player, 10, 9); // Moving backwards
             }).toThrow('invalid move');
         });
+
+        it('should return an immutable copy of previousMoves', () => {
+            // Make a valid move to add an entry to previousMoves
+            boardState.makeMove(player, -1, startPosition);
+            
+            // Get the previousMoves
+            const previousMoves = boardState.previousMoves;
+            
+            // Try to modify the returned array
+            previousMoves.push({ yellow: [1, 2, 3, 4], blue: [-1, -1, -1, -1], red: [-1, -1, -1, -1], green: [-1, -1, -1, -1] });
+            
+            // Check that the original previousMoves in boardState hasn't changed
+            expect(boardState.previousMoves).toHaveLength(1);
+            expect(boardState.previousMoves).not.toEqual(previousMoves);
+        });
     });
 });
