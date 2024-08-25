@@ -23,6 +23,11 @@ describe('getMoves', () => {
                     expect(moves).toHaveLength(0);
                 });
             });
+            it('should return a move with firstMove == true if dice roll is 5', () => {
+                const moves = getMoves(player, boardState, 5);
+                expect(moves).toHaveLength(1);
+                expect(moves[0].isFirstMove).toBeTruthy();
+            });
         });
 
         describe('when some counters are at base', () => {
