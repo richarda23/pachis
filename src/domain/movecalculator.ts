@@ -17,12 +17,22 @@ export const getMoves = (player: Colour, boardState: BoardState, diceRoll: DiceR
 
     if (boardState.isSomeCountersAtBase(player)) {
         // we have to move a piece on if we can
-        if (diceRoll == 5 && boardState.isAvailable(player, startPosition)) {
-            return [{ player, from: -1, to: startPosition }]
+        if (diceRoll == 5) {
+            if (boardState.isAvailable(player, startPosition)) {
+                return [{ player, from: -1, to: startPosition }]
+            } else {
+                return []; // can't go
+            }
+        } else {
+            return _calculateMoves(player, boardState, diceRoll)
         }
     } else {
-        // all our play
+        return _calculateMoves(player, boardState, diceRoll)
     }
+}
 
-    return [];
+const _calculateMoves = (player: Colour, boardState: BoardState, diceRoll: DiceRoll): Array<Move> => {
+    const activeCounters = boardState.activeCounters(player);
+    const possibleMovers = activeCounters.filter(pos => boardState.isAvailable(player, pos + diceRoll));
+    return possibleMovers.map(pos => ({ player, from: pos, to: pos + diceRoll }))
 }

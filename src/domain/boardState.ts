@@ -4,7 +4,8 @@ import { cloneDeep } from "lodash";
 
 type Positions = Record<Colour, number[]>
 
-const BASE = -1;
+export const BASE = -1;
+export const HOME = 100;
 export class BoardState {
     _previousMoves = new Array<Positions>();
     _board: Board;
@@ -94,7 +95,7 @@ export class BoardState {
     // gets an array of active counters (counters not at base or HOME)
     activeCounters(player: Colour): number[] {
         //TODO include test for 'Home' position
-        return this._positions[player].filter(pos => pos != BASE);
+        return this._positions[player].filter(pos => pos != BASE && pos != HOME);
     }
 
 }

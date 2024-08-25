@@ -1,4 +1,17 @@
-# React + TypeScript + Vite
+
+# Pachis
+
+A test implementation of game of Pachis - a cross between ludo and backgammon
+
+Using 'aider' AI code as a co-worker to see how it works
+
+Currently working on basic game logic then will add UI
+
+Plan to run as multiplayer web app.
+
+## Original blurb from create-vite-app
+
+### React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
