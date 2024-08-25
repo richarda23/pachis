@@ -1,15 +1,16 @@
+import { Color } from "react-bootstrap/esm/types";
 import { Player } from "./player"
 
 type PlayerConditional = (player: Player) => boolean;
 export type BoardCell = {
     isStart: PlayerConditional,
-    isSafe: boolean,
+    isBlackSpot: boolean,
     position: number
 }
 
 const players: Player[] = [new Player("yellow"), new Player("blue"), new Player("red"), new Player("green")]
 export class Board {
-    squares: BoardCell[]
+    _squares: BoardCell[]
 
     constructor() {
         const squares: BoardCell[] = []
@@ -23,13 +24,21 @@ export class Board {
                         || player.colour === "blue" && j == 22
                         || player.colour === "red" && j == 39
                         || player.colour === "green" && j == 56,
-                    isSafe: j == 0 || j == 5 || j == 12,
+                    isBlackSpot: j == 0 || j == 5 || j == 12,
                     position: i * 17 + j
                 }
                 squares.push(cell)
             }
         }
-        this.squares = squares
+        this._squares = squares
+    }
+
+    startPosition(player: Color) {
+
+    }
+
+    get squares() {
+        return [...this._squares]
     }
 }
 
