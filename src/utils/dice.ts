@@ -3,6 +3,7 @@
  */
 export class Dice {
     private seed: number;
+    private rng: (seed: number) => number
 
     /**
      * Creates a new Dice instance with the given seed.
@@ -10,6 +11,10 @@ export class Dice {
      */
     constructor(seed: number) {
         this.seed = seed;
+        this.rng = (seed: number) => {
+            let x = Math.sin(seed) * 10000;
+            return x - Math.floor(x);
+        };
     }
 
     /**
@@ -18,13 +23,10 @@ export class Dice {
      */
     throw(): number {
         // Create a simple pseudo-random number generator
-        const rng = (seed: number) => {
-            let x = Math.sin(seed) * 10000;
-            return x - Math.floor(x);
-        };
+
 
         // Generate a number between 0 and 1
-        const random = rng(this.seed);
+        const random = this.rng(this.seed);
 
         // Update the seed for the next throw
         this.seed = Math.floor(random * 1000000);
