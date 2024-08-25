@@ -8,33 +8,25 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 describe('getMoves', () => {
     let board: Board;
     let boardState: BoardState;
+    const players: Colour[] = ['yellow', 'blue', 'red', 'green'];
 
     beforeEach(() => {
         board = new Board();
         boardState = new BoardState(4, board);
     });
 
-    const testForAllPlayers = (testFn: (player: Colour) => void) => {
-        const players: Colour[] = ['yellow', 'blue', 'red', 'green'];
-        players.forEach(player => {
-            testFn(player);
-        });
-    };
-
-    describe('when all counters are at base', () => {
-        it('should return no valid moves if dice roll is not 5', () => {
-            testForAllPlayers((player) => {
+    describe.each(players)('for player %s', (player) => {
+        describe('when all counters are at base', () => {
+            it('should return no valid moves if dice roll is not 5', () => {
                 [1, 2, 3, 4, 6].forEach(roll => {
                     const moves = getMoves(player, boardState, roll as DiceRoll);
                     expect(moves).toHaveLength(0);
                 });
             });
         });
-    });
 
-    describe('when some counters are at base', () => {
-        it('should return only 1 valid move for a throw of 5', () => {
-            testForAllPlayers((player) => {
+        describe('when some counters are at base', () => {
+            it('should return only 1 valid move for a throw of 5', () => {
                 // Move one counter out of base
                 boardState.currentState[player][0] = 5;
 
@@ -46,10 +38,8 @@ describe('getMoves', () => {
                     to: board.startPosition(player)
                 });
             });
-        });
 
-        it('should return an empty array if the start position is not available', () => {
-            testForAllPlayers((player) => {
+            it('should return an empty array if the start position is not available', () => {
                 // Move one counter out of base
                 boardState.currentState[player][0] = 5;
 
