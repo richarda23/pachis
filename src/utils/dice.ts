@@ -1,3 +1,5 @@
+import { DiceRoll } from "../domain/movecalculator";
+
 /**
  * A class representing a dice that generates pseudo-random numbers between 1 and 6 (inclusive) using a seed.
  */
@@ -21,12 +23,12 @@ export class Dice {
      * Generates a pseudo-random number between 1 and 6 (inclusive).
      * @returns A number between 1 and 6, simulating a dice throw.
      */
-    throw(): number {
+    throw(): DiceRoll {
 
         // Generate a number between 0 and 1
         const random = this.rng(this.seed)
 
         // Scale to 1-6 and round down
-        return Math.floor(random * 6) + 1;
+        return Math.floor(random * 6) + 1 as DiceRoll;
     }
 }

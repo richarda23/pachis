@@ -64,7 +64,7 @@ describe('getMoves', () => {
         describe('when all counters are in play', () => {
             it('should return 4 possible moves when all counters can move', () => {
                 const diceRoll: DiceRoll = 3;
-                boardState.currentState[player] = [10, 20, 30, 40];
+                boardState._positions[player] = [10, 20, 30, 40];
 
                 // Mock isAvailable to always return true
                 const isAvailableSpy = vi.spyOn(boardState, 'isAvailable').mockReturnValue(true);
@@ -84,7 +84,7 @@ describe('getMoves', () => {
 
             it('should return fewer moves when some counters cannot move', () => {
                 const diceRoll: DiceRoll = 3;
-                boardState.currentState[player] = [10, 20, 30, 40];
+                boardState._positions[player] = [10, 20, 30, 40];
 
                 // Mock isAvailable to return false for some positions
                 const isAvailableSpy = vi.spyOn(boardState, 'isAvailable').mockImplementation(
@@ -104,7 +104,7 @@ describe('getMoves', () => {
 
             it('should return no moves when no counters can move', () => {
                 const diceRoll: DiceRoll = 3;
-                boardState.currentState[player] = [10, 20, 30, 40];
+                boardState._positions[player] = [10, 20, 30, 40];
 
                 // Mock isAvailable to always return false
                 const isAvailableSpy = vi.spyOn(boardState, 'isAvailable').mockReturnValue(false);
