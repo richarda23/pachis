@@ -110,9 +110,7 @@ describe('getMoves', () => {
                 const isAvailableSpy = vi.spyOn(boardState, 'isAvailable').mockReturnValue(false);
 
                 const moves = getMoves(player, boardState, diceRoll);
-
                 expect(moves).toHaveLength(0);
-
                 isAvailableSpy.mockRestore();
             });
         });
