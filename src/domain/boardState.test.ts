@@ -127,4 +127,22 @@ describe('BoardState', () => {
             expect(boardState.currentState).not.toEqual(initialState);
         });
     });
+
+    describe('isStartOfGame', () => {
+        it('should return true when no moves have been made', () => {
+            const boardState = new BoardState(2, board);
+            expect(boardState.isStartOfGame()).toBe(true);
+        });
+
+        it('should return false after a move has been made', () => {
+            const boardState = new BoardState(2, board);
+            const player = 'yellow';
+            const startPosition = board.startPosition(player);
+            
+            boardState['_positions'][player] = [-1, -1, -1, -1];
+            boardState.makeMove(player, -1, startPosition);
+            
+            expect(boardState.isStartOfGame()).toBe(false);
+        });
+    });
 });
