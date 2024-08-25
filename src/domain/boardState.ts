@@ -84,8 +84,12 @@ export class BoardState {
 
     // a position is available if it is occupied by 0 or 1 counters. 
     // if 2 counters are at the position, the position is unavailable to move to
-    isAvailable(player: Colour, position: number) {
-
+    isAvailable(player: Colour, position: number): boolean {
+        const countersAtPosition = Object.values(this._positions)
+            .flat()
+            .filter(pos => pos === position)
+            .length;
+        return countersAtPosition < 2;
     }
 
 }

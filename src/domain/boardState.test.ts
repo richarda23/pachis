@@ -204,4 +204,34 @@ describe('BoardState', () => {
             expect(boardState.isSomeCountersAtBase('green')).toBe(false);
         });
     });
+
+    describe('isAvailable', () => {
+        let boardState: BoardState;
+
+        beforeEach(() => {
+            boardState = new BoardState(2, board);
+        });
+
+        it('should return true when the position is empty', () => {
+            expect(boardState.isAvailable('yellow', 5)).toBe(true);
+        });
+
+        it('should return true when the position has one counter', () => {
+            boardState['_positions'].yellow = [-1, -1, 5, -1];
+            expect(boardState.isAvailable('yellow', 5)).toBe(true);
+        });
+
+        it('should return false when the position has two counters', () => {
+            boardState['_positions'].yellow = [-1, -1, 5, 5];
+            expect(boardState.isAvailable('yellow', 5)).toBe(false);
+        });
+
+        it('should return true for different positions and players', () => {
+            boardState['_positions'].yellow = [-1, 10, -1, -1];
+            boardState['_positions'].blue = [-1, -1, 15, -1];
+            expect(boardState.isAvailable('yellow', 10)).toBe(true);
+            expect(boardState.isAvailable('blue', 15)).toBe(true);
+            expect(boardState.isAvailable('red', 20)).toBe(true);
+        });
+    });
 });
