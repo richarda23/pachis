@@ -1,5 +1,5 @@
 import { Color } from "react-bootstrap/esm/types";
-import { Player } from "./player"
+import { Colour, Player } from "./player"
 
 type PlayerConditional = (player: Player) => boolean;
 export type BoardCell = {
@@ -9,6 +9,13 @@ export type BoardCell = {
 }
 
 const players: Player[] = [new Player("yellow"), new Player("blue"), new Player("red"), new Player("green")]
+
+const startingPositions: Record<Colour, number> = {
+    "yellow": 5,
+    "blue": 22,
+    "red": 39,
+    "green": 56,
+}
 export class Board {
     _squares: BoardCell[]
 
@@ -33,8 +40,8 @@ export class Board {
         this._squares = squares
     }
 
-    startPosition(player: Color) {
-
+    startPosition(player: Colour) {
+        return startingPositions[player];
     }
 
     get squares() {
