@@ -1,9 +1,12 @@
 export type Colour = "yellow" | "blue" | "red" | "green"
 
 export class Player {
-    private colour: Colour
+    private _colour: Colour
+    public get colour(): Colour {
+        return this._colour
+    }
 
     constructor(colour: Colour) {
-        this.colour = colour
+        this._colour = colour
     }
 }

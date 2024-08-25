@@ -22,14 +22,9 @@ export class Dice {
      * @returns A number between 1 and 6, simulating a dice throw.
      */
     throw(): number {
-        // Create a simple pseudo-random number generator
-
 
         // Generate a number between 0 and 1
-        const random = this.rng(this.seed);
-
-        // Update the seed for the next throw
-        this.seed = Math.floor(random * 1000000);
+        const random = this.rng(this.seed)
 
         // Scale to 1-6 and round down
         return Math.floor(random * 6) + 1;

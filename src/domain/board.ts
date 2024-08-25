@@ -1,0 +1,35 @@
+import { Player } from "./player"
+
+type PlayerConditional = (player: Player) => boolean;
+export type BoardCell = {
+    isStart: PlayerConditional,
+    isSafe: boolean,
+    position: number
+}
+
+const players: Player[] = [new Player("yellow"), new Player("blue"), new Player("red"), new Player("green")]
+export class Board {
+    squares: BoardCell[]
+
+    constructor() {
+        const squares: BoardCell[] = []
+        for (let i = 0; i < 4; i++) {
+            const colour = players[i].colour;
+
+            for (let j = 0; j < 17; j++) {
+
+                const cell: BoardCell = {
+                    isStart: (player: Player) => player.colour === colour && j == 5
+                        || player.colour === "blue" && j == 22
+                        || player.colour === "red" && j == 39
+                        || player.colour === "green" && j == 56,
+                    isSafe: j == 0 || j == 5 || j == 12,
+                    position: i * 17 + j
+                }
+                squares.push(cell)
+            }
+        }
+        this.squares = squares
+    }
+}
+
