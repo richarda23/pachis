@@ -1,7 +1,9 @@
-import { getMoves } from './movecalculator';
+import { DiceRoll, getMoves } from './movecalculator';
 import { BoardState } from './boardState';
 import { Board } from './board';
 import { Colour } from './player';
+import { describe, it, expect, beforeEach } from 'vitest';
+
 
 describe('getMoves', () => {
     let board: Board;
@@ -23,7 +25,7 @@ describe('getMoves', () => {
         it('should return no valid moves if dice roll is not 5', () => {
             testForAllPlayers((player) => {
                 [1, 2, 3, 4, 6].forEach(roll => {
-                    const moves = getMoves(player, boardState, roll as 1 | 2 | 3 | 4 | 6);
+                    const moves = getMoves(player, boardState, roll as DiceRoll);
                     expect(moves).toHaveLength(0);
                 });
             });
@@ -34,7 +36,7 @@ describe('getMoves', () => {
         it('should return only 1 valid move for a throw of 5', () => {
             testForAllPlayers((player) => {
                 // Move one counter out of base
-                boardState['_positions'][player][0] = 5;
+                boardState.currentState[player][0] = 5;
 
                 const moves = getMoves(player, boardState, 5);
                 expect(moves).toHaveLength(1);
