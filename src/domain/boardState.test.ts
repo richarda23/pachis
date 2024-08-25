@@ -4,12 +4,9 @@ import { Colour, Player } from './player';
 import { Board } from './board';
 
 describe('BoardState', () => {
-    const players = [
-        new Player('yellow'),
-        new Player('blue'),
-        new Player('red'),
-        new Player('green')
-    ];
+
+    const allPlayers: Colour[] = ['yellow', 'blue', 'red', 'green'];
+
     const board = new Board();
 
     it('should throw an error when moving from an invalid position', () => {
@@ -30,7 +27,6 @@ describe('BoardState', () => {
         }).not.toThrow();
     });
 
-    const allPlayers: Colour[] = ['yellow', 'blue', 'red', 'green'];
 
     describe.each(allPlayers)('when a 5 is thrown and there are counters at base', (colour) => {
         let boardState: BoardState;

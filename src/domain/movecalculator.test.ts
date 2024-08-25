@@ -28,26 +28,27 @@ describe('getMoves', () => {
         describe('when some counters are at base', () => {
             it('should return only 1 valid move for a throw of 5', () => {
                 // Move one counter out of base
-                boardState.currentState[player][0] = 5;
+                boardState._positions[player][0] = 5;
 
                 const moves = getMoves(player, boardState, 5);
                 expect(moves).toHaveLength(1);
                 expect(moves[0]).toEqual({
                     player,
                     from: -1,
-                    to: board.startPosition(player)
+                    to: board.startPosition(player),
+                    isFirstMove: false
                 });
             });
 
             it('should return an empty array if the start position is not available', () => {
                 // Move one counter out of base
-                boardState.currentState[player][0] = 5;
+                boardState._positions[player][0] = 5;
 
                 // Place two counters of another player on the start position
                 const otherPlayer = player === 'yellow' ? 'blue' : 'yellow';
                 const startPosition = board.startPosition(player);
-                boardState.currentState[otherPlayer][0] = startPosition;
-                boardState.currentState[otherPlayer][1] = startPosition;
+                boardState._positions[otherPlayer][0] = startPosition;
+                boardState._positions[otherPlayer][1] = startPosition;
 
                 // Mock isAvailable method to return false for the start position
                 const isAvailableSpy = vi.spyOn(boardState, 'isAvailable').mockReturnValue(false);
@@ -73,10 +74,10 @@ describe('getMoves', () => {
 
                 expect(moves).toHaveLength(4);
                 expect(moves).toEqual(expect.arrayContaining([
-                    { player, from: 10, to: 13 },
-                    { player, from: 20, to: 23 },
-                    { player, from: 30, to: 33 },
-                    { player, from: 40, to: 43 }
+                    { player, from: 10, to: 13, isFirstMove: false },
+                    { player, from: 20, to: 23, isFirstMove: false },
+                    { player, from: 30, to: 33, isFirstMove: false },
+                    { player, from: 40, to: 43, isFirstMove: false }
                 ]));
 
                 isAvailableSpy.mockRestore();
@@ -95,8 +96,8 @@ describe('getMoves', () => {
 
                 expect(moves).toHaveLength(2);
                 expect(moves).toEqual(expect.arrayContaining([
-                    { player, from: 10, to: 13 },
-                    { player, from: 40, to: 43 }
+                    { player, from: 10, to: 13, isFirstMove: false },
+                    { player, from: 40, to: 43, isFirstMove: false }
                 ]));
 
                 isAvailableSpy.mockRestore();

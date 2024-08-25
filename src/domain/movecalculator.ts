@@ -4,7 +4,13 @@ export type DiceRoll = 1 | 2 | 3 | 4 | 5 | 6;
 export type Move = {
     player: Colour,
     from: number,
-    to: number
+    to: number,
+    isFirstMove: boolean
+}
+const createMove = (player: Colour, from: number, to: number, isFirstMove: boolean = false): Move => {
+    return {
+        player, from, to, isFirstMove
+    }
 }
 export const getMoves = (player: Colour, boardState: BoardState, diceRoll: DiceRoll): Array<Move> => {
     const currentState = boardState.currentState;
@@ -14,12 +20,17 @@ export const getMoves = (player: Colour, boardState: BoardState, diceRoll: DiceR
     if (boardState.isAllCountersAtBase(player) && diceRoll != 5) {
         return [];
     }
+    if (boardState.isAllCountersAtBase(player) && diceRoll === 5) {
+        if (boardState.isAvailable(player, startPosition)) {
+            return [createMove(player, -1, startPosition, true)]
+        }
+    }
 
     if (boardState.isSomeCountersAtBase(player)) {
         // we have to move a piece on if we can
         if (diceRoll == 5) {
             if (boardState.isAvailable(player, startPosition)) {
-                return [{ player, from: -1, to: startPosition }]
+                return [createMove(player, -1, startPosition)]
             } else {
                 return []; // can't go
             }
@@ -34,5 +45,5 @@ export const getMoves = (player: Colour, boardState: BoardState, diceRoll: DiceR
 const _calculateMoves = (player: Colour, boardState: BoardState, diceRoll: DiceRoll): Array<Move> => {
     const activeCounters = boardState.activeCounters(player);
     const possibleMovers = activeCounters.filter(pos => boardState.isAvailable(player, pos + diceRoll));
-    return possibleMovers.map(pos => ({ player, from: pos, to: pos + diceRoll }))
+    return possibleMovers.map(pos => (createMove(player, pos, pos + diceRoll)))
 }
