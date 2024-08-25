@@ -72,8 +72,20 @@ export class BoardState {
         return this._previousMoves.length === 0;
     }
 
-    isAllCountersAtBase(player: Colour) {
+    // all of a player's counters are at base
+    isAllCountersAtBase(player: Colour): boolean {
         return this._positions[player].every(pos => pos === BASE)
+    }
+
+    // at least one of a player's counters is at base
+    isSomeCountersAtBase(player: Colour): boolean {
+        return this._positions[player].some(pos => pos === BASE)
+    }
+
+    // a position is available if it is occupied by 0 or 1 counters. 
+    // if 2 counters are at the position, the position is unavailable to move to
+    isAvailable(player: Colour, position: number) {
+
     }
 
 }
