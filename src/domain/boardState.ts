@@ -4,15 +4,16 @@ import { cloneDeep } from "lodash";
 
 type Positions = Record<Colour, number[]>
 
+const BASE = -1;
 export class BoardState {
     _previousMoves = new Array<Positions>();
     _board: Board;
     // -1 = base, 75 = home
     _positions: Positions = {
-        "yellow": [-1, -1, -1, -1],
-        "blue": [-1, -1, -1, -1],
-        "red": [-1, -1, -1, -1],
-        "green": [-1, -1, -1, -1],
+        "yellow": [BASE, BASE, BASE, BASE],
+        "blue": [BASE, BASE, BASE, BASE],
+        "red": [BASE, BASE, BASE, BASE],
+        "green": [BASE, BASE, BASE, BASE],
     }
 
     constructor(numPlayers: number, board: Board) {
@@ -49,21 +50,30 @@ export class BoardState {
             throw new Error(`Moving from invalid position ${from} but counters are at ${currState[player].join(",")} `);
         }
         // if we have thrown a 5, and we have any counters still at base, we can only move to start position, 
-        if (currState[player].find(pos => pos === -1)) {
+        if (currState[player].find(pos => pos === BASE)) {
             const boardStart = this._board.startPosition(player);
-            if (from != -1) {
+            if (from != BASE) {
                 return false;
             }
             if (to != boardStart) {
                 return false;
             }
-
+            // already have two players on start.
+            // TODO what if it's a different player
             if (currState[player].filter(pos => pos === boardStart).length == 2) {
                 return false;
             }
             return true;
         }
         return true;
+    }
+
+    isStartOfGame() {
+        return this._previousMoves.length === 0;
+    }
+
+    isAllCountersAtBase(player: Colour) {
+        return this._positions[player].every(pos => pos === BASE)
     }
 
 }

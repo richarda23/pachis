@@ -138,39 +138,39 @@ describe('BoardState', () => {
             const boardState = new BoardState(2, board);
             const player = 'yellow';
             const startPosition = board.startPosition(player);
-            
+
             boardState['_positions'][player] = [-1, -1, -1, -1];
             boardState.makeMove(player, -1, startPosition);
-            
+
             expect(boardState.isStartOfGame()).toBe(false);
         });
     });
 
-    describe('isAllCountersAtHome', () => {
+    describe('isAllCountersAtBase', () => {
         let boardState: BoardState;
 
         beforeEach(() => {
             boardState = new BoardState(2, board);
         });
 
-        it('should return true when all counters are at home (-1)', () => {
-            expect(boardState.isAllCountersAtHome('yellow')).toBe(true);
-            expect(boardState.isAllCountersAtHome('blue')).toBe(true);
-            expect(boardState.isAllCountersAtHome('red')).toBe(true);
-            expect(boardState.isAllCountersAtHome('green')).toBe(true);
+        it('should return true when all counters are attBase (-1)', () => {
+            expect(boardState.isAllCountersAtBase('yellow')).toBe(true);
+            expect(boardState.isAllCountersAtBase('blue')).toBe(true);
+            expect(boardState.isAllCountersAtBase('red')).toBe(true);
+            expect(boardState.isAllCountersAtBase('green')).toBe(true);
         });
 
-        it('should return false when any counter is not at home', () => {
+        it('should return false when any counter is not at Base', () => {
             boardState['_positions'].yellow = [-1, -1, -1, 5];
-            expect(boardState.isAllCountersAtHome('yellow')).toBe(false);
+            expect(boardState.isAllCountersAtBase('yellow')).toBe(false);
 
             boardState['_positions'].blue = [-1, 10, -1, -1];
-            expect(boardState.isAllCountersAtHome('blue')).toBe(false);
+            expect(boardState.isAllCountersAtBase('blue')).toBe(false);
         });
 
-        it('should return false when all counters are out of home', () => {
+        it('should return false when all counters are out of Base', () => {
             boardState['_positions'].red = [1, 2, 3, 4];
-            expect(boardState.isAllCountersAtHome('red')).toBe(false);
+            expect(boardState.isAllCountersAtBase('red')).toBe(false);
         });
     });
 });
