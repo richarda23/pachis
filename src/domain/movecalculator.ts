@@ -5,7 +5,7 @@ export type Move = {
     player: Colour,
     from: number,
     to: number,
-    isFirstMove: boolean
+    isFirstMove: boolean // indicator that 2 counters are placed on initial roll
 }
 const createMove = (player: Colour, from: number, to: number, isFirstMove: boolean = false): Move => {
     return {
@@ -17,10 +17,10 @@ export const getMoves = (player: Colour, boardState: BoardState, diceRoll: DiceR
     const startPosition = boardState._board.startPosition(player);
 
     // if we have all players at base and it's not a 5, we can't go
-    if (boardState.isAllCountersAtBase(player) && diceRoll != 5) {
+    if (boardState.isAllCountersAtBaseForPlayer(player) && diceRoll != 5) {
         return [];
     }
-    if (boardState.isAllCountersAtBase(player) && diceRoll === 5) {
+    if (boardState.isAllCountersAtBaseForPlayer(player) && diceRoll === 5) {
         if (boardState.isAvailable(player, startPosition)) {
             return [createMove(player, -1, startPosition, true)]
         }
@@ -45,5 +45,5 @@ export const getMoves = (player: Colour, boardState: BoardState, diceRoll: DiceR
 const _calculateMoves = (player: Colour, boardState: BoardState, diceRoll: DiceRoll): Array<Move> => {
     const activeCounters = boardState.activeCounters(player);
     const possibleMovers = activeCounters.filter(pos => boardState.isAvailable(player, pos + diceRoll));
-    return possibleMovers.map(pos => (createMove(player, pos, pos + diceRoll)))
+    return possibleMovers.map(pos => createMove(player, pos, pos + diceRoll))
 }

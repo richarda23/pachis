@@ -70,12 +70,17 @@ export class BoardState {
     }
 
     isStartOfGame() {
-        return this._previousMoves.length === 0;
+        return this._previousMoves.length === 0 && this.isAllCountersAtBase();
     }
 
     // all of a player's counters are at base
-    isAllCountersAtBase(player: Colour): boolean {
+    isAllCountersAtBaseForPlayer(player: Colour): boolean {
         return this._positions[player].every(pos => pos === BASE)
+    }
+
+    // all counters are at base
+    isAllCountersAtBase(): boolean {
+        return Object.values(this._positions).flat().every(pos => pos === BASE)
     }
 
     // at least one of a player's counters is at base

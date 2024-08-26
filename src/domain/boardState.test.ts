@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { BASE, BoardState, HOME } from './boardState';
-import { Colour, Player } from './player';
+import { Colour } from './player';
 import { Board } from './board';
 
 describe('BoardState', () => {
@@ -154,6 +154,7 @@ describe('BoardState', () => {
             expect(boardState.isAllCountersAtBaseForPlayer('blue')).toBe(true);
             expect(boardState.isAllCountersAtBaseForPlayer('red')).toBe(true);
             expect(boardState.isAllCountersAtBaseForPlayer('green')).toBe(true);
+
         });
 
         it('should return false when any counter is not at Base', () => {
@@ -162,6 +163,7 @@ describe('BoardState', () => {
 
             boardState['_positions'].blue = [BASE, 10, BASE, BASE];
             expect(boardState.isAllCountersAtBaseForPlayer('blue')).toBe(false);
+
         });
 
         it('should return false when all counters are out of Base', () => {
@@ -172,6 +174,7 @@ describe('BoardState', () => {
         it('should correctly handle both true and false conditions for isAllCountersAtBase', () => {
             // Initially, all counters should be at base
             expect(boardState.isAllCountersAtBase()).toBe(true);
+
 
             // Move one counter for yellow
             boardState['_positions'].yellow = [BASE, BASE, BASE, 5];
