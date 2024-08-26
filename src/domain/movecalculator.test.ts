@@ -41,7 +41,8 @@ describe('getMoves', () => {
                     player,
                     from: -1,
                     to: board.startPosition(player),
-                    isFirstMove: false
+                    isFirstMove: false,
+                    toHome: false,
                 });
             });
 
@@ -79,10 +80,10 @@ describe('getMoves', () => {
 
                 expect(moves).toHaveLength(4);
                 expect(moves).toEqual(expect.arrayContaining([
-                    { player, from: 10, to: 13, isFirstMove: false },
-                    { player, from: 20, to: 23, isFirstMove: false },
-                    { player, from: 30, to: 33, isFirstMove: false },
-                    { player, from: 40, to: 43, isFirstMove: false }
+                    { player, from: 10, to: 13, isFirstMove: false, toHome: false, },
+                    { player, from: 20, to: 23, isFirstMove: false, toHome: false, },
+                    { player, from: 30, to: 33, isFirstMove: false, toHome: false, },
+                    { player, from: 40, to: 43, isFirstMove: false, toHome: false, }
                 ]));
 
                 isAvailableSpy.mockRestore();
@@ -101,8 +102,8 @@ describe('getMoves', () => {
 
                 expect(moves).toHaveLength(2);
                 expect(moves).toEqual(expect.arrayContaining([
-                    { player, from: 10, to: 13, isFirstMove: false },
-                    { player, from: 40, to: 43, isFirstMove: false }
+                    { player, from: 10, to: 13, isFirstMove: false, toHome: false },
+                    { player, from: 40, to: 43, isFirstMove: false, toHome: false }
                 ]));
 
                 isAvailableSpy.mockRestore();

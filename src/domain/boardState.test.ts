@@ -73,26 +73,28 @@ describe('BoardState', () => {
 
         it('should append to history when a valid move is made', () => {
             const initialState = boardState.currentState;
-            boardState.makeMove(player, BASE, startPosition); // Assuming 5 is a valid start position
+            boardState.makeMove(player, BASE, startPosition, 5); // Assuming 5 is a valid start position
             expect(boardState.previousMoves).toHaveLength(1);
             expect(boardState.previousMoves[0]).toEqual(initialState);
         });
 
         it('should update the position when a valid move is made', () => {
-            boardState.makeMove(player, BASE, startPosition); // Assuming 5 is a valid start position
+            boardState.makeMove(player, BASE, startPosition, 5); // Assuming 5 is a valid start position
             expect(boardState.currentState[player]).toContain(startPosition);
             expect(boardState.currentState[player].filter(pos => pos === BASE)).toHaveLength(1);
+            expect(boardState.progress[player][0]).toBe(5);
+            expect(boardState.currentState[player][0]).toBe(startPosition);
         });
 
         it('should throw an error for an invalid move', () => {
             expect(() => {
-                boardState.makeMove(player, 10, 9); // Moving backwards
+                boardState.makeMove(player, 10, 9, -1); // Moving backwards
             }).toThrow('invalid move');
         });
 
         it('should return an immutable copy of previousMoves', () => {
             // Make a valid move to add an entry to previousMoves
-            boardState.makeMove(player, BASE, startPosition);
+            boardState.makeMove(player, BASE, startPosition, 5);
 
             // Get the previousMoves
             const previousMoves = boardState.previousMoves;
@@ -136,7 +138,7 @@ describe('BoardState', () => {
             const startPosition = board.startPosition(player);
 
             boardState['_positions'][player] = [BASE, BASE, BASE, BASE];
-            boardState.makeMove(player, BASE, startPosition);
+            boardState.makeMove(player, BASE, startPosition, 5);
 
             expect(boardState.isStartOfGame()).toBe(false);
         });

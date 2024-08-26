@@ -1,4 +1,3 @@
-import { Color } from "react-bootstrap/esm/types";
 import { Colour, Player } from "./player"
 
 type PlayerConditional = (player: Player) => boolean;

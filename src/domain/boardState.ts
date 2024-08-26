@@ -3,6 +3,7 @@ import { Colour } from "./player";
 import { cloneDeep } from "lodash";
 
 type Positions = Record<Colour, number[]>
+type Progress = Record<Colour, number[]>
 
 export const BASE = -1;
 export const HOME = 100;
@@ -15,7 +16,14 @@ export class BoardState {
         "blue": [BASE, BASE, BASE, BASE],
         "red": [BASE, BASE, BASE, BASE],
         "green": [BASE, BASE, BASE, BASE],
-    }
+
+    };
+    _progress: Progress = {
+        "yellow": [0, 0, 0, 0],
+        "blue": [0, 0, 0, 0],
+        "red": [0, 0, 0, 0],
+        "green": [0, 0, 0, 0],
+    };
 
     constructor(numPlayers: number, board: Board) {
         this._board = board
@@ -24,21 +32,33 @@ export class BoardState {
     get previousMoves() {
         return this._previousMoves.map(p => cloneDeep(p));
     }
-    // get a copy of current state
+    /**
+     *  get a copy of current state
+     */
     get currentState(): Positions {
         return cloneDeep(this._positions)
     }
-    // makes a valid move
-    // asserts that the move is valid
-    makeMove(player: Colour, from: number, to: number) {
+
+    /**
+     *  get a copy of current state
+     */
+    get progress(): Progress {
+        return cloneDeep(this._progress)
+    }
+
+    /**  
+      makes a valid move. asserts that the move is valid
+    */
+    makeMove(player: Colour, from: number, to: number, progress: number) {
         if (!this.isValidMove(player, from, to)) {
             throw new Error(`invalid move!!! ${player} from ${from} to ${to} `)
         }
         this._previousMoves.push(this.currentState);
         const counterToMove = this._positions[player].findIndex(pos => pos === from);
         this._positions[player][counterToMove] = to;
+        this._progress[player][counterToMove] += progress;
     }
-
+    /** comment  */
     isValidMove(player: Colour, from: number, to: number): boolean {
         // assertions
 
