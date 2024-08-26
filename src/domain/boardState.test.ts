@@ -150,23 +150,23 @@ describe('BoardState', () => {
         });
 
         it('should return true when all counters are attBase (BASE)', () => {
-            expect(boardState.isAllCountersAtBase('yellow')).toBe(true);
-            expect(boardState.isAllCountersAtBase('blue')).toBe(true);
-            expect(boardState.isAllCountersAtBase('red')).toBe(true);
-            expect(boardState.isAllCountersAtBase('green')).toBe(true);
+            expect(boardState.isAllCountersAtBaseForPlayer('yellow')).toBe(true);
+            expect(boardState.isAllCountersAtBaseForPlayer('blue')).toBe(true);
+            expect(boardState.isAllCountersAtBaseForPlayer('red')).toBe(true);
+            expect(boardState.isAllCountersAtBaseForPlayer('green')).toBe(true);
         });
 
         it('should return false when any counter is not at Base', () => {
             boardState['_positions'].yellow = [BASE, BASE, BASE, 5];
-            expect(boardState.isAllCountersAtBase('yellow')).toBe(false);
+            expect(boardState.isAllCountersAtBaseForPlayer('yellow')).toBe(false);
 
             boardState['_positions'].blue = [BASE, 10, BASE, BASE];
-            expect(boardState.isAllCountersAtBase('blue')).toBe(false);
+            expect(boardState.isAllCountersAtBaseForPlayer('blue')).toBe(false);
         });
 
         it('should return false when all counters are out of Base', () => {
             boardState['_positions'].red = [1, 2, 3, 4];
-            expect(boardState.isAllCountersAtBase('red')).toBe(false);
+            expect(boardState.isAllCountersAtBaseForPlayer('red')).toBe(false);
         });
     });
 
