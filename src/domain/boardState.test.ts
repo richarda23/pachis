@@ -149,7 +149,7 @@ describe('BoardState', () => {
             boardState = new BoardState(2, board);
         });
 
-        it('should return true when all counters are attBase (BASE)', () => {
+        it('should return true when all counters are at Base (BASE)', () => {
             expect(boardState.isAllCountersAtBaseForPlayer('yellow')).toBe(true);
             expect(boardState.isAllCountersAtBaseForPlayer('blue')).toBe(true);
             expect(boardState.isAllCountersAtBaseForPlayer('red')).toBe(true);
@@ -167,6 +167,31 @@ describe('BoardState', () => {
         it('should return false when all counters are out of Base', () => {
             boardState['_positions'].red = [1, 2, 3, 4];
             expect(boardState.isAllCountersAtBaseForPlayer('red')).toBe(false);
+        });
+
+        it('should correctly handle both true and false conditions for isAllCountersAtBase', () => {
+            // Initially, all counters should be at base
+            expect(boardState.isAllCountersAtBase()).toBe(true);
+
+            // Move one counter for yellow
+            boardState['_positions'].yellow = [BASE, BASE, BASE, 5];
+            expect(boardState.isAllCountersAtBase()).toBe(false);
+
+            // Move all counters back to base for yellow
+            boardState['_positions'].yellow = [BASE, BASE, BASE, BASE];
+            expect(boardState.isAllCountersAtBase()).toBe(true);
+
+            // Move counters for multiple players
+            boardState['_positions'].yellow = [BASE, BASE, 10, BASE];
+            boardState['_positions'].blue = [BASE, 15, BASE, BASE];
+            expect(boardState.isAllCountersAtBase()).toBe(false);
+
+            // Move all counters out of base
+            boardState['_positions'].yellow = [1, 2, 3, 4];
+            boardState['_positions'].blue = [5, 6, 7, 8];
+            boardState['_positions'].red = [9, 10, 11, 12];
+            boardState['_positions'].green = [13, 14, 15, 16];
+            expect(boardState.isAllCountersAtBase()).toBe(false);
         });
     });
 
